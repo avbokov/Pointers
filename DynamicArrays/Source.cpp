@@ -1,13 +1,20 @@
 ﻿//DynamicArrays
 #include<iostream>
 using namespace std;
+using std::cout;
 
 void FillRand(int arr[], const int n);
 void Print(int arr[], const int n);
+int* Push_Back(int arr[], int& n);
+int* Push_Front(int arr[], int& n);
+int* Pop_Back(int arr[], int& n);
+int* Pop_Front(int arr[], int& n);
+int* Insert(int arr[], int& n);
+int* Erase(int arr[], int& n);
 
 void main()
 {
-	cout << int() << endl; // выводим значение по умолчанию для типа данных int
+	//cout << int() << endl; // выводим значение по умолчанию для типа данных int
 	setlocale(LC_ALL, "Russian");
 	int n; // размер массива
 	cout << "Введите размер массива: "; cin >> n;
@@ -21,6 +28,7 @@ void main()
 	cout << endl;
 	//TODO:
 	//Добавить значение в конец массива
+#ifdef ONE
 	int value;
 	cout << "Введите добавляемое значение: "; cin >> value;
 	//1) Создаём буферный массив нужного размера:
@@ -40,6 +48,9 @@ void main()
 	arr[n] = value;
 	//6) после добавления элемента в массив, количество его элементов увеличивается на 1:
 	n++;
+#endif ONE
+	
+	arr = Erase(arr, n);
 	Print(arr, n);
 
 	delete[] arr;
@@ -62,4 +73,104 @@ void Print(int arr[], const int n)
 		//или же через оператор индексирования[]:
 		cout << arr[i]<< "\t";
 	}
+}
+
+int* Push_Back(int arr[], int& n)
+{
+	int value;
+	cout << "Введите добавляемое значение: "; cin >> value;
+	int* buffer = new int[n + 1]{};
+	for (int i = 0; i < n; i++)
+	{
+		buffer[i] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	arr[n] = value;
+	n++;
+	return arr;
+}
+
+int* Push_Front(int arr[], int& n)
+{
+	int value;
+	cout << "Введите добавляемое значение: "; cin >> value;
+	int* buffer = new int[n + 1]{};
+	for (int i = 0; i < n; i++)
+	{
+		buffer[i + 1] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	arr[0] = value;
+	n++;
+	return arr;
+}
+
+int* Pop_Back(int arr[], int& n)
+{
+	cout << "Удалим последний элемент массива: " << endl;
+	int* buffer = new int[n - 1]{};
+	for (int i = 0; i < n - 1; i++)
+	{
+		buffer[i] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	n--;
+	return arr;
+}
+
+int* Pop_Front(int arr[], int& n)
+{
+	cout << "Удалим первый элемент массива: " << endl;
+	int* buffer = new int[n - 1]{};
+	for (int i = 0; i < n; i++)
+	{
+		buffer[i] = arr[i + 1];
+	}
+	delete[] arr;
+	arr = buffer;
+	n--;
+	return arr;
+}
+
+int* Insert(int arr[], int& n)
+{
+	int value;
+	int index_value;
+	cout << "Введите добавляемое значение: "; cin >> value;
+	cout << "Введите индекс добавляемого значения (от 0 до " << n - 1 << "): "; cin >> index_value;
+	int* buffer = new int[n + 1]{};
+	for (int i = 0; i <= index_value; i++)
+	{
+		i!= index_value ? buffer[i] = arr[i] : buffer[i] = value;
+	}
+	for (int i = index_value; i < n; i++)
+	{
+		buffer[i + 1] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	n++;
+	return arr;
+}
+
+int* Erase(int arr[], int& n)
+{
+	int value;	int index_value;
+	cout << "Введите индекс удаляемого значения (от 0 до " << n - 1 << "): "; cin >> index_value;
+	int* buffer = new int[n + 1]{};
+	for (int i = 0; i < index_value; i++)
+	{
+		buffer[i] = arr[i];
+	}
+	for (int i = index_value; i < n; i++)
+	{
+		buffer[i] = arr[i + 1];
+	}
+	delete[] arr;
+	arr = buffer;
+	n--;
+	return arr;
 }

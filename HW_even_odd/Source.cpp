@@ -36,8 +36,8 @@ void main()
 
 	for (int i = 0; i < n; i++)
 	{
-		//arr[i] % 2 == 0 ? even[SIZE_EVEN] = arr[i], SIZE_EVEN++ : odd[SIZE_ODD] = arr[i], SIZE_ODD++; - так и не понял, почему не работает корректно
-		if (arr[i] % 2 == 0)
+		arr[i] % 2 == 0 ? (even[SIZE_EVEN] = arr[i], SIZE_EVEN++) : (odd[SIZE_ODD] = arr[i], SIZE_ODD++);
+		/*if (arr[i] % 2 == 0)
 		{
 			even[SIZE_EVEN] = arr[i];
 			SIZE_EVEN++;
@@ -46,7 +46,7 @@ void main()
 		{
 			odd[SIZE_ODD] = arr[i];
 			SIZE_ODD++;
-		}
+		}*/
 	}
 
 	cout << "Массив чётных значений: "; Print(even, SIZE_EVEN);
