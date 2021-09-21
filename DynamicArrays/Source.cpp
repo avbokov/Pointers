@@ -78,7 +78,7 @@ void Print(int arr[], const int n)
 int* Push_Back(int arr[], int& n)
 {
 	int value;
-	cout << "Введите добавляемое значение: "; cin >> value;
+	cout << "Введите добавляемое в конец массива значение: "; cin >> value;
 	int* buffer = new int[n + 1]{};
 	for (int i = 0; i < n; i++)
 	{
@@ -94,7 +94,7 @@ int* Push_Back(int arr[], int& n)
 int* Push_Front(int arr[], int& n)
 {
 	int value;
-	cout << "Введите добавляемое значение: "; cin >> value;
+	cout << "Введите добавляемое в начало массива значение: "; cin >> value;
 	int* buffer = new int[n + 1]{};
 	for (int i = 0; i < n; i++)
 	{
