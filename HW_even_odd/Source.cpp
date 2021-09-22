@@ -14,7 +14,7 @@ void main()
 
 	cout << "Введите размер массива: "; cin >> n;
 	int* arr = new int[n] {};
-		
+
 	FillRand(arr, n);
 	Print(arr, n);
 
@@ -30,13 +30,15 @@ void main()
 
 	int* odd = new int[SIZE_ODD] {};
 	int* even = new int[SIZE_EVEN] {};
-	
+
 	SIZE_ODD = 0;
 	SIZE_EVEN = 0;
 
 	for (int i = 0; i < n; i++)
 	{
-		arr[i] % 2 == 0 ? (even[SIZE_EVEN] = arr[i], SIZE_EVEN++) : (odd[SIZE_ODD] = arr[i], SIZE_ODD++);
+		//arr[i] % 2 == 0 ? (even[SIZE_EVEN] = arr[i], SIZE_EVEN++) : (odd[SIZE_ODD] = arr[i], SIZE_ODD++);
+		//(arr[i] % 2 == 0 ? even[SIZE_EVEN++] : odd[SIZE_ODD++]) = arr[i];	//Прямая логика
+		(arr[i] % 2 ? odd[SIZE_ODD++] : even[SIZE_EVEN++]) = arr[i];	//Инверсная логика
 		/*if (arr[i] % 2 == 0)
 		{
 			even[SIZE_EVEN] = arr[i];

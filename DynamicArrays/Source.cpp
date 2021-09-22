@@ -18,7 +18,7 @@ void main()
 	setlocale(LC_ALL, "Russian");
 	int n; // размер массива
 	cout << "Введите размер массива: "; cin >> n;
-	int* arr = new int[n]{}; //Heap
+	int* arr = new int[n] {}; //Heap
 
 
 	//Обращаться к элементам массива можно
@@ -49,7 +49,7 @@ void main()
 	//6) после добавления элемента в массив, количество его элементов увеличивается на 1:
 	n++;
 #endif ONE
-	
+
 	arr = Erase(arr, n);
 	Print(arr, n);
 
@@ -71,7 +71,7 @@ void Print(int arr[], const int n)
 	for (int i = 0; i < n; i++)
 	{
 		//или же через оператор индексирования[]:
-		cout << arr[i]<< "\t";
+		cout << arr[i] << "\t";
 	}
 }
 
@@ -144,7 +144,7 @@ int* Insert(int arr[], int& n)
 	int* buffer = new int[n + 1]{};
 	for (int i = 0; i <= index_value; i++)
 	{
-		i!= index_value ? buffer[i] = arr[i] : buffer[i] = value;
+		i != index_value ? buffer[i] = arr[i] : buffer[i] = value;
 	}
 	for (int i = index_value; i < n; i++)
 	{
