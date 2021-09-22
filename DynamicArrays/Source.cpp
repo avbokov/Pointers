@@ -5,12 +5,12 @@ using std::cout;
 
 void FillRand(int arr[], const int n);
 void Print(int arr[], const int n);
-int* Push_Back(int arr[], int& n);
-int* Push_Front(int arr[], int& n);
+int* Push_Back(int arr[], int& n, int value);
+int* Push_Front(int arr[], int& n, int value);
 int* Pop_Back(int arr[], int& n);
 int* Pop_Front(int arr[], int& n);
-int* Insert(int arr[], int& n);
-int* Erase(int arr[], int& n);
+int* Insert(int arr[], int& n, int value, int index_value);
+int* Erase(int arr[], int& n, int value, int index_value);
 
 void main()
 {
@@ -20,12 +20,19 @@ void main()
 	cout << "Введите размер массива: "; cin >> n;
 	int* arr = new int[n] {}; //Heap
 
-
 	//Обращаться к элементам массива можно
 	FillRand(arr, n);
 	Print(arr, n);
-
 	cout << endl;
+
+	int value;
+	int index_value;
+	cout << "Введите добавляемое значение в массив: "; cin >> value;
+	cout << "Введите индекс добавляемого/удаляемого значения (от 0 до " << n - 1 << "): "; cin >> index_value;
+
+
+
+	
 	//TODO:
 	//Добавить значение в конец массива
 #ifdef ONE
@@ -50,7 +57,7 @@ void main()
 	n++;
 #endif ONE
 
-	arr = Erase(arr, n);
+	arr = Erase(arr, n, value, index_value);
 	Print(arr, n);
 
 	delete[] arr;
@@ -75,10 +82,9 @@ void Print(int arr[], const int n)
 	}
 }
 
-int* Push_Back(int arr[], int& n)
+int* Push_Back(int arr[], int& n, int value)
 {
-	int value;
-	cout << "Введите добавляемое в конец массива значение: "; cin >> value;
+	cout << "Добавим значение в конец массива: " << endl;
 	int* buffer = new int[n + 1]{};
 	for (int i = 0; i < n; i++)
 	{
@@ -91,10 +97,9 @@ int* Push_Back(int arr[], int& n)
 	return arr;
 }
 
-int* Push_Front(int arr[], int& n)
+int* Push_Front(int arr[], int& n, int value)
 {
-	int value;
-	cout << "Введите добавляемое в начало массива значение: "; cin >> value;
+	cout << "Добавим значение в начало массива: " << endl;
 	int* buffer = new int[n + 1]{};
 	for (int i = 0; i < n; i++)
 	{
@@ -135,12 +140,9 @@ int* Pop_Front(int arr[], int& n)
 	return arr;
 }
 
-int* Insert(int arr[], int& n)
+int* Insert(int arr[], int& n, int value, int index_value)
 {
-	int value;
-	int index_value;
-	cout << "Введите добавляемое значение: "; cin >> value;
-	cout << "Введите индекс добавляемого значения (от 0 до " << n - 1 << "): "; cin >> index_value;
+	cout << "Добавим значение по указанному индексу: " << endl;
 	int* buffer = new int[n + 1]{};
 	for (int i = 0; i <= index_value; i++)
 	{
@@ -156,10 +158,9 @@ int* Insert(int arr[], int& n)
 	return arr;
 }
 
-int* Erase(int arr[], int& n)
+int* Erase(int arr[], int& n, int value, int index_value)
 {
-	int value;	int index_value;
-	cout << "Введите индекс удаляемого значения (от 0 до " << n - 1 << "): "; cin >> index_value;
+	cout << "Удалим значение по указанному индексу: " << endl;
 	int* buffer = new int[n + 1]{};
 	for (int i = 0; i < index_value; i++)
 	{
