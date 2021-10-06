@@ -4,14 +4,23 @@ using namespace std;
 using std::cout;
 using std::cin;
 
-void FillRand(int arr[], const int n);
-void FillRand(int** arr, const int rows, const int cols);
+void FillRand(int arr[], const int n, int minRand = 0, int maxRand = 100);
+void FillRand(double arr[], const int n, int minRand = 0, int maxRand = 100);
+void FillRand(char arr[], const int n, int minRand = 0, int maxRand = 100);
+void FillRand(int** arr, const int rows, const int cols, int minRand = 0, int maxRand = 100);
+void FillRand(double** arr, const int rows, const int cols, int minRand = 0, int maxRand = 100);
+void FillRand(char** arr, const int rows, const int cols, int minRand = 0, int maxRand = 100);
 
 template<typename T>void Print(T arr[], const int n);
 template<typename T>void Print(T** arr, const int rows, const int cols);
 
-int* Push_Back(int arr[], int& n, int value);
+template <typename T>T** Allocate(const int rows, const int cols);
+template <typename T>void Clear(T** arr, const int rows);
+
+template<typename T>T* Push_Back(T arr[], int& n, T value);
 int** Push_Row_Back(int** arr, int& rows, const int cols, int stroka[]);
+int** Push_Col_Back(int** arr, const int rows, int& cols, int stroka[]);
+void Push_Col_Back(int** arr, const int rows, int& cols); // в классе
 
 
 int* Push_Front(int arr[], int& n, int value);
@@ -20,13 +29,19 @@ int** Push_Col_Front(int** arr, const int rows, int& cols, int stroka[]);
 
 int* Pop_Back(int arr[], int& n);
 int** Pop_Row_Back(int** arr, int& rows, const int cols);
+int** Pop_Col_Back(int** arr, const int rows, int& cols);
+void Pop_col_Back(int** arr, const int rows, int& cols); // в классе (разные имена)
 
 int* Pop_Front(int arr[], int& n);
 int** Pop_Row_Front(int** arr, int& rows, const int cols);
 int** Pop_Col_Front(int** arr, const int rows, int& cols);
 
 
-int* Insert(int arr[], int& n, int value, int index_value);
+template<typename T>T* Insert(T arr[], int& n, T value, int index_value);
+int** Insert_Row(int** arr, int& rows, const int cols, int stroka[], int index);
+int** Insert_Col(int** arr, const int rows, int& cols, int stroka[], int index);
+
+
 int* Erase(int arr[], int& n, int value, int index_value);
 int** Erase_Row(int** arr, int& rows, const int cols, int index);
 int** Erase_Col(int** arr, const int rows, int& cols, int index);
@@ -91,13 +106,16 @@ void main()
 	cout << "Введите количесво строк (rows): "; cin >> rows;
 	cout << "Введите количесво элементов строки (cols): "; cin >> cols;
 	////////// Объявление двумерного динамического массива //////////
+
+	char** arr = Allocate<char>(rows, cols);
 	//1) Создаём массив указателей 
-	int** arr = new int* [rows] {};
-	//2) Создаём строки
-	for (int i = 0; i < rows; i++)
-	{
-		arr[i] = new int[cols] {};
-	}
+	//int** arr = new int* [rows] {};
+	////2) Создаём строки
+	//for (int i = 0; i < rows; i++)
+	//{
+	//	arr[i] = new int[cols] {};
+	//}
+	//cout << "Массив создан, сейчас будем добавлять строку";
 	////////// Использование двумерного динамического массива //////////
 	cout << endl;
 	//system("PAUSE");
@@ -114,9 +132,28 @@ void main()
 	cout << endl << endl;
 
 	//arr = Push_Row_Back(arr, rows, cols, stroka);
+	//arr = Push_Col_Back(arr, rows, cols, stroka);
+
 	//arr = Push_Row_Front(arr, rows, cols, stroka);
+	//arr = Push_Col_Front(arr, rows, cols, stroka);
+
 	//arr = Pop_Row_Back(arr, rows, cols);
 	//arr = Pop_Col_Back(arr, rows, cols);
+
+	//arr = Pop_Row_Front(arr, rows, cols);
+	//arr = Pop_Col_Front(arr, rows, cols);
+
+	//arr = Insert_Row(arr, rows, cols, stroka, index);
+	//arr = Insert_Col(arr, rows, cols, stroka, index);
+
+	//arr = Erase_Row(arr, rows, cols, index);
+	//arr = Erase_Col(arr, rows, cols, index);
+
+	//cout << "Строка добавлена" << endl;
+	//FillRand(arr[rows - 1], cols, 200, 1000);
+
+	//Push_Col_Back(arr, rows, cols);
+	//Pop_col_Back(arr, rows, cols);
 
 	Print(arr, rows, cols);
 	cout << endl;
@@ -152,16 +189,16 @@ void FillRand(double arr[], const int n, int minRand, int maxRand)
 	{
 		//Используя арифметику указателей и оператор разименования:
 		*(arr + i) = rand() % (maxRand - minRand) + minRand;
-		*(arr + i) /=100;
+		*(arr + i) /= 100;
 	}
 }
 
-void FillRand(int arr[], const int n)
+void FillRand(char arr[], const int n, int minRand, int maxRand)
 {
 	for (int i = 0; i < n; i++)
 	{
 		//Используя арифметику указателей и оператор разименования:
-		*(arr + i) = rand() % 100;
+		*(arr + i) = rand();
 	}
 }
 
@@ -222,12 +259,12 @@ template<typename T>void Print(T** arr, const int rows, const int cols)
 	}
 }
 
-int* Push_Back(int arr[], int& n, int value)
+template<typename T>T** Allocate(int const rows, int const cols)
 {
-	T** arr = new T* [rows] {};
+	T** arr = new T * [rows] {};
 	for (int i = 0; i < rows; i++)
 	{
-		arr[i] = new T[cols] {};
+		arr[i] = new T[cols]{};
 	}
 	return arr;
 }
@@ -259,22 +296,11 @@ template<typename T>T* Push_Back(T arr[], int& n, T value)
 int** Push_Row_Back(int** arr, int& rows, const int cols, int stroka[])
 {
 	cout << "Добавим строку в конец массива: " << endl << endl;
-	int** buffer = new int*[rows + 1]{}; // создаём указатель на массив указателей, который длиннее исходного на один и инициализируем его нулями
-	for (int i = 0; i < rows + 1; i++) // создаём строки
-	{
-		buffer[i] = new int[cols] {}; // для каждого указателя резервируем область памяти длиной cols, в которую будеь записывать int'ы и тоже инициализируем его нулями
-	}
+	int** buffer = new int* [rows + 1]{}; // создаём указатель на массив указателей, который длиннее исходного на один и инициализируем его нулями
 
-int** Push_Col_Back(int** arr, const int rows, int& cols, int stroka[])
-{
-	cout << "Добавим столбец в конец массива: " << endl << endl;
-	int** buffer = new int* [rows]{}; // создаём указатель на массив указателей, который длиннее исходного на один и инициализируем его нулями
-	for (int i = 0; i < rows; i++) // создаём строки
-	{
-		buffer[i] = new int[cols + 1]{};// для каждого указателя резервируем область памяти длиной cols, в которую будеь записывать int'ы и тоже инициализируем его нулями
-	}
+	buffer[rows] = stroka; //в последнюю ячейку массива указателей записываем указатель на добавляемую строку
 
-	for (int i = 0; i < rows; i++)
+	for (int i = 0; i < rows; i++) // копируем значения из исходного массива в буферный соответственно
 	{
 		buffer[i] = arr[i];
 	}
@@ -305,21 +331,32 @@ int** Push_Col_Back(int** arr, const int rows, int& cols, int stroka[])
 		delete[] arr[i];
 	}
 
-	for (int i = 0; i < rows; i++) // освобождаем память, которую занимал исходный массив и возвращаем его ОС
+	for (int i = 0; i < rows; i++)
 	{
 		buffer[i][cols] = stroka[i];
 	}
+
 	delete[] arr; // затем значение массива указателей (указатели на область памяти)
 
 	arr = buffer; // за
 
-	for (int j = 0; j < cols; j++)
-	{
-		arr[rows][j] = stroka[j];
-	}
-
-	rows++;
+	cols++;
 	return arr;
+}
+
+void Push_Col_Back(int** arr, const int rows, int& cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		int* buffer = new int[cols + 1]{};
+		for (int j = 0; j < cols; j++)
+		{
+			buffer[j] = arr[i][j];
+		}
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	cols++;
 }
 
 int* Push_Front(int arr[], int& n, int value)
@@ -340,13 +377,31 @@ int* Push_Front(int arr[], int& n, int value)
 int** Push_Row_Front(int** arr, int& rows, const int cols, int stroka[])
 {
 	cout << "Добавим строку в начало массива: " << endl << endl;
-	int** buffer = new int*[rows + 1]{}; // создаём указатель на массив указателей, который длиннее исходного на один и инициализируем его нулями
-	for (int i = 0; i < rows + 1; i++) // создаём строки
-	{
-		buffer[i] = new int[cols] {}; // для каждого указателя резервируем область памяти длиной cols, в которую будеь записывать int'ы и тоже инициализируем его нулями
-	}
+	int** buffer = new int* [rows + 1]{}; // создаём указатель на массив указателей, который длиннее исходного на один и инициализируем его нулями
 
 	buffer[0] = stroka; //в первую ячейку массива указателей записываем указатель на добавляемую строку
+
+	for (int i = 0; i < rows; i++) // копируем значения из исходного массива в буферный соответственно
+	{
+		buffer[i + 1] = arr[i];
+	}
+
+	delete[] arr; // затем значение массива указателей (указатели на область памяти)
+
+	arr = buffer; // за
+
+	rows++;
+	return arr;
+}
+
+int** Push_Col_Front(int** arr, const int rows, int& cols, int stroka[])
+{
+	cout << "Добавим столбец в начало массива: " << endl << endl;
+	int** buffer = new int* [rows] {};
+	for (int i = 0; i < rows; i++) // создаём строки
+	{
+		buffer[i] = new int[cols + 1]{};
+	}
 
 	for (int i = 0; i < rows; i++)
 	{
@@ -387,8 +442,27 @@ int* Pop_Back(int arr[], int& n)
 int** Pop_Row_Back(int** arr, int& rows, const int cols)
 {
 	cout << "Удалим строку в конце массива: " << endl << endl;
-	int** buffer = new int*[rows - 1]{}; // создаём указатель на массив указателей, который короче исходного на один и инициализируем его нулями
-	for (int i = 0; i < rows - 1; i++) // создаём строки
+	int** buffer = new int* [rows - 1]{}; // создаём указатель на массив указателей, который короче исходного на один и инициализируем его нулями
+
+	for (int i = 0; i < rows - 1; i++) // копируем значения из исходного массива в буферный соответственно
+	{
+		buffer[i] = arr[i];
+	}
+
+	delete[] arr[rows - 1];
+	delete[] arr; // затем значение массива указателей (указатели на область памяти)
+
+	arr = buffer; // за
+
+	rows--;
+	return arr;
+}
+
+int** Pop_Col_Back(int** arr, const int rows, int& cols)
+{
+	cout << "Удалим строку в конце массива: " << endl << endl;
+	int** buffer = new int* [rows] {};
+	for (int i = 0; i < rows; i++) // создаём строки
 	{
 		buffer[i] = new int[cols - 1]{};
 	}
@@ -442,18 +516,29 @@ int* Pop_Front(int arr[], int& n)
 int** Pop_Row_Front(int** arr, int& rows, const int cols) // не работает
 {
 	cout << "Удалим строку в начале массива: " << endl << endl;
-	int** buffer = new int*[rows - 1]{}; // создаём указатель на массив указателей, который короче исходного на один и инициализируем его нулями
-	for (int i = 0; i < rows - 1; i++) // создаём строки
-	{
-		buffer[i] = new int[cols] {}; // для каждого указателя резервируем область памяти длиной cols, в которую будеь записывать int'ы и тоже инициализируем его нулями
-	}
+	int** buffer = new int* [rows - 1]{}; // создаём указатель на массив указателей, который короче исходного на один и инициализируем его нулями
 
 	for (int i = 0; i < rows; i++) // копируем значения из исходного массива в буферный соответственно
 	{
-		for (int j = 0; j < cols; j++)
-		{
-			buffer[i][j] = arr[i + 1][j];
-		}
+		buffer[i] = arr[i + 1];
+	}
+
+	delete[] arr[0];
+	delete[] arr; // затем значение массива указателей (указатели на область памяти)
+
+	arr = buffer;
+
+	rows--;
+	return arr;
+}
+
+int** Pop_Col_Front(int** arr, const int rows, int& cols)
+{
+	cout << "Удалим строку в начале массива: " << endl << endl;
+	int** buffer = new int* [rows] {};
+	for (int i = 0; i < rows; i++) // создаём строки
+	{
+		buffer[i] = new int[cols - 1]{};
 	}
 
 	for (int i = 0; i < rows; i++)
@@ -464,9 +549,10 @@ int** Pop_Row_Front(int** arr, int& rows, const int cols) // не работае
 		}
 		delete[] arr[i];
 	}
+
 	delete[] arr; // затем значение массива указателей (указатели на область памяти)
 
-	arr = buffer; // за
+	arr = buffer;
 
 	cols--;
 	return arr;
@@ -491,6 +577,64 @@ template<typename T>T* Insert(T arr[], int& n, T value, int index_value)
 	return arr;
 }
 
+int** Insert_Row(int** arr, int& rows, const int cols, int stroka[], int index)
+{
+	if (index > rows) return arr;
+	cout << "Вставим строку в массив по индексу: " << index << endl << endl;
+	int** buffer = new int* [rows + 1]{};
+
+	for (int i = 0; i < index; i++) // копируем значения из исходного массива в буферный соответственно
+	{
+		buffer[i] = arr[i];
+	}
+
+	buffer[index] = stroka;
+
+	for (int i = index; i < rows; i++)
+	{
+		buffer[i + 1] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	rows++;
+	return arr;
+}
+
+int** Insert_Col(int** arr, const int rows, int& cols, int stroka[], int index)
+{
+	if (index > cols) return arr;
+	cout << "Вставим столбец в массив по индексу: " << index << endl << endl;
+	int** buffer = new int* [rows] {};
+	for (int i = 0; i < rows; i++)
+	{
+		buffer[i] = new int[cols + 1]{};
+	}
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < index; j++)
+		{
+			buffer[i][j] = arr[i][j];
+		}
+		for (int j = index; j < cols; j++)
+		{
+			buffer[i][j + 1] = arr[i][j];
+		}
+		delete[] arr[i];
+	}
+
+	for (int i = 0; i < rows; i++)
+	{
+		buffer[i][index] = stroka[i];
+	}
+
+	delete[] arr; // затем значение массива указателей (указатели на область памяти)
+
+	arr = buffer; // за
+	cols++;
+	return arr;
+}
+
 int* Erase(int arr[], int& n, int value, int index_value)
 {
 	cout << "Удалим значение по указанному индексу: " << endl;
@@ -507,6 +651,57 @@ int* Erase(int arr[], int& n, int value, int index_value)
 	delete[] arr;
 	arr = buffer;
 	n--;
+	return arr;
+}
+
+int** Erase_Row(int** arr, int& rows, const int cols, int index)
+{
+	if (index >= rows) return arr;
+	cout << "Удалим строку из массива по индексу: " << index << endl << endl;
+	int** buffer = new int* [rows - 1]{};
+
+	for (int i = 0; i < index; i++) // копируем значения из исходного массива в буферный соответственно
+	{
+		buffer[i] = arr[i];
+	}
+
+	for (int i = index; i < rows; i++)
+	{
+		buffer[i] = arr[i + 1];
+	}
+	delete[] arr;
+	arr = buffer;
+	rows--;
+	return arr;
+}
+
+int** Erase_Col(int** arr, const int rows, int& cols, int index)
+{
+	if (index > cols) return arr;
+	cout << "Удалим столбец из массива по индексу: " << index << endl << endl;
+	int** buffer = new int* [rows] {};
+	for (int i = 0; i < rows; i++)
+	{
+		buffer[i] = new int[cols - 1]{};
+	}
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < index; j++)
+		{
+			buffer[i][j] = arr[i][j];
+		}
+		for (int j = index; j < cols; j++)
+		{
+			buffer[i][j] = arr[i][j + 1];
+		}
+		delete[] arr[i];
+	}
+
+	delete[] arr; // затем значение массива указателей (указатели на область памяти)
+
+	arr = buffer; // за
+	cols--;
 	return arr;
 }
 
