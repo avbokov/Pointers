@@ -18,7 +18,7 @@ template <typename T>T** Allocate(const int rows, const int cols);
 template <typename T>void Clear(T** arr, const int rows);
 
 template<typename T>T* Push_Back(T arr[], int& n, T value);
-int** Push_Row_Back(int** arr, int& rows, const int cols, int stroka[]);
+template<typename T>T** Push_Row_Back(T** arr, int& rows, const int cols, T stroka[]);
 int** Push_Col_Back(int** arr, const int rows, int& cols, int stroka[]);
 void Push_Col_Back(int** arr, const int rows, int& cols); // в классе
 
@@ -128,10 +128,10 @@ void main()
 	cout << "Добавляемая строка (столбец): " << endl << endl;
 	Print(stroka, cols);
 	cout << endl << endl;
-	cout << "Введите индекс добавляемой (удаляемой) строки (столбца), от 0 до " << rows << " (от 0 до " << cols << "): "; cin >> index;
-	cout << endl << endl;
+	/*cout << "Введите индекс добавляемой (удаляемой) строки (столбца), от 0 до " << rows << " (от 0 до " << cols << "): "; cin >> index;
+	cout << endl << endl;*/
 
-	//arr = Push_Row_Back(arr, rows, cols, stroka);
+	arr = Push_Row_Back(arr, rows, cols, stroka);
 	//arr = Push_Col_Back(arr, rows, cols, stroka);
 
 	//arr = Push_Row_Front(arr, rows, cols, stroka);
@@ -293,10 +293,10 @@ template<typename T>T* Push_Back(T arr[], int& n, T value)
 	return arr;
 }
 
-int** Push_Row_Back(int** arr, int& rows, const int cols, int stroka[])
+template<typename T>T** Push_Row_Back(T** arr, int& rows, const int cols, int stroka[])
 {
 	cout << "Добавим строку в конец массива: " << endl << endl;
-	int** buffer = new int* [rows + 1]{}; // создаём указатель на массив указателей, который длиннее исходного на один и инициализируем его нулями
+	T** buffer = new T* [rows + 1]{}; // создаём указатель на массив указателей, который длиннее исходного на один и инициализируем его нулями
 
 	buffer[rows] = stroka; //в последнюю ячейку массива указателей записываем указатель на добавляемую строку
 
