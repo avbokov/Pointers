@@ -13,7 +13,7 @@ void Print(int** arr, const int rows, const int cols);
 int** Allocate(const int rows, const int cols);
 void Clear(int** arr, const int rows);
 
-template<typename T>T* Push_Back(T arr[], int& n, T value);
+int* Push_Back(int arr[], int& n, int value);
 int** Push_Row_Back(int** arr, int& rows, const int cols, int stroka[]);
 int** Push_Col_Back(int** arr, const int rows, int& cols, int stroka[]);
 void Push_Col_Back(int** arr, const int rows, int& cols); // в классе
@@ -33,7 +33,7 @@ int** Pop_Row_Front(int** arr, int& rows, const int cols);
 int** Pop_Col_Front(int** arr, const int rows, int& cols);
 
 
-template<typename T>T* Insert(T arr[], int& n, T value, int index_value);
+int* Insert(int arr[], int& n, int value, int index_value);
 int** Insert_Row(int** arr, int& rows, const int cols, int stroka[], int index);
 int** Insert_Col(int** arr, const int rows, int& cols, int stroka[], int index);
 
@@ -103,7 +103,7 @@ void main()
 	cout << "Введите количесво элементов строки (cols): "; cin >> cols;
 	////////// Объявление двумерного динамического массива //////////
 
-	char** arr = Allocate<char>(rows, cols);
+	int** arr = Allocate(rows, cols);
 	//1) Создаём массив указателей 
 	//int** arr = new int* [rows] {};
 	////2) Создаём строки
@@ -228,10 +228,10 @@ void Clear(int** arr, const int rows)
 	delete[] arr;
 }
 
-template<typename T>T* Push_Back(T arr[], int& n, T value)
+int* Push_Back(int arr[], int& n, int value)
 {
 	cout << "Добавим значение в конец массива: " << endl;
-	T* buffer = new T[n + 1]{};
+	int* buffer = new int[n + 1]{};
 	for (int i = 0; i < n; i++)
 	{
 		buffer[i] = arr[i];
@@ -508,10 +508,10 @@ int** Pop_Col_Front(int** arr, const int rows, int& cols)
 	return arr;
 }
 
-template<typename T>T* Insert(T arr[], int& n, T value, int index_value)
+int* Insert(int arr[], int& n, int value, int index_value)
 {
 	cout << "Добавим значение по указанному индексу: " << endl;
-	T* buffer = new T[n + 1]{};
+	int* buffer = new int[n + 1]{};
 	for (int i = 0; i <= index_value; i++)
 	{
 		i != index_value ? buffer[i] = arr[i] : buffer[i] = value;
