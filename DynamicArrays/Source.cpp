@@ -10,8 +10,8 @@ void FillRand(int** arr, const int rows, const int cols, int minRand = 0, int ma
 void Print(int arr[], const int n);
 void Print(int** arr, const int rows, const int cols);
 
-template <typename T>T** Allocate(const int rows, const int cols);
-template <typename T>void Clear(T** arr, const int rows);
+int** Allocate(const int rows, const int cols);
+void Clear(int** arr, const int rows);
 
 template<typename T>T* Push_Back(T arr[], int& n, T value);
 int** Push_Row_Back(int** arr, int& rows, const int cols, int stroka[]);
@@ -209,17 +209,17 @@ void Print(int** arr, const int rows, const int cols)
 	}
 }
 
-template<typename T>T** Allocate(int const rows, int const cols)
+int** Allocate(int const rows, int const cols)
 {
-	T** arr = new T * [rows] {};
+	int** arr = new int * [rows] {};
 	for (int i = 0; i < rows; i++)
 	{
-		arr[i] = new T[cols]{};
+		arr[i] = new int[cols]{};
 	}
 	return arr;
 }
 
-template<typename T>void Clear(T** arr, const int rows)
+void Clear(int** arr, const int rows)
 {
 	for (int i = 0; i < rows; i++)
 	{
