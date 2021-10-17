@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EvenOdd_functions", "EvenOd
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicArraysTemplated", "DynamicArraysTemplated\DynamicArraysTemplated.vcxproj", "{8893FFC2-A095-4AE7-BBC5-5B4C6988C798}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Optimization", "Optimization\Optimization.vcxproj", "{18E5C0EB-A82B-46A4-BEC0-966DF65612D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,14 @@ Global
 		{8893FFC2-A095-4AE7-BBC5-5B4C6988C798}.Release|x64.Build.0 = Release|x64
 		{8893FFC2-A095-4AE7-BBC5-5B4C6988C798}.Release|x86.ActiveCfg = Release|Win32
 		{8893FFC2-A095-4AE7-BBC5-5B4C6988C798}.Release|x86.Build.0 = Release|Win32
+		{18E5C0EB-A82B-46A4-BEC0-966DF65612D1}.Debug|x64.ActiveCfg = Debug|x64
+		{18E5C0EB-A82B-46A4-BEC0-966DF65612D1}.Debug|x64.Build.0 = Debug|x64
+		{18E5C0EB-A82B-46A4-BEC0-966DF65612D1}.Debug|x86.ActiveCfg = Debug|Win32
+		{18E5C0EB-A82B-46A4-BEC0-966DF65612D1}.Debug|x86.Build.0 = Debug|Win32
+		{18E5C0EB-A82B-46A4-BEC0-966DF65612D1}.Release|x64.ActiveCfg = Release|x64
+		{18E5C0EB-A82B-46A4-BEC0-966DF65612D1}.Release|x64.Build.0 = Release|x64
+		{18E5C0EB-A82B-46A4-BEC0-966DF65612D1}.Release|x86.ActiveCfg = Release|Win32
+		{18E5C0EB-A82B-46A4-BEC0-966DF65612D1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
